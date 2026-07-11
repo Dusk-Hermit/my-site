@@ -7,7 +7,7 @@
 **用户故事：**
 - 作为站点所有者，我可以通过编辑 Markdown 文件来发布文章，无需手动操作 HTML/CSS
 - 作为站点所有者，我可以将小游戏（纯前端 HTML/JS）放到网站上供他人游玩
-- 作为站点所有者，我可以在「实验室」板块上传喜欢的二次元插画，自动提取色调并应用到全站主题
+- 作为站点所有者，我可以在「色彩分析器」板块上传喜欢的二次元插画，自动提取色调并按 60-30-10 比例应用到全站主题
 - 作为访问者，我可以浏览文章、玩游戏、查看实验项目
 - 作为 Agent，我可以直接编辑 `content/` 目录下的 .md/.mdx 文件来更新网站内容
 
@@ -62,7 +62,7 @@ my-site/
 │   │   ├── page.tsx          #   首页
 │   │   ├── articles/         #   文章列表 + 文章详情
 │   │   ├── games/            #   游戏列表 + 游戏内嵌
-│   │   ├── lab/              #   实验室（含色彩分析器）
+│   │   ├── color-analyzer/   #   色彩分析器（上传 → 提取色调 → 主题应用）
 │   │   └── about/            #   关于页
 │   ├── components/           # 共享组件
 │   │   ├── Navbar.tsx
@@ -162,7 +162,7 @@ export function ArticleCard({ title, date, slug, tags }: ArticleCardProps) {
 ## Feature Specs
 
 ### F1: 导航与页面框架
-- 固定顶部导航栏：首页 / 文章 / 小游戏 / 实验室 / 关于
+- 固定顶部导航栏：首页 / 文章 / 小游戏 / 🎨色彩分析器 / 关于
 - 移动端响应式（汉堡菜单）
 - 页脚：版权 © 2026 + "Powered by Agent"
 
@@ -178,14 +178,17 @@ export function ArticleCard({ title, date, slug, tags }: ArticleCardProps) {
 - 游戏元数据来自 `content/games/games.json`
 - 空状态：无游戏时显示「即将上线」
 
-### F4: 实验室 — 色彩分析器 🎨
-- 位于 `/lab` 页面
+### F4: 色彩分析器 🎨
+- 位于 `/color-analyzer` 页面，作为顶级导航栏目（与文章、小游戏平行）
 - 初始状态：空白的图片上传区域 + 提示文字
 - 上传图片后：
-  - 使用 Canvas API 提取图片的主色调（3-5 个主要颜色）
-  - 在页面上展示提取的色调色板
+  - 使用 Canvas API 提取图片的主色调（3-5 个主要颜色），按面积占比排序
+  - 在页面上展示提取的色调色板（色块 + hex 值）
   - 显示上传的图片缩略图
-- 「应用主题」按钮：将提取的色调应用到全站 CSS 变量
+- 「应用主题」按钮：按 60-30-10 色彩法则分配提取的色调：
+  - 60% 主色（面积最大的颜色）→ 页面背景、大片区域
+  - 30% 辅色（面积第二的颜色）→ 卡片、导航栏、面板背景
+  - 10% 强调色（最鲜艳/面积第三的颜色）→ 按钮、链接、高亮、hover 状态
 - 持久化：
   - 图片以 base64 存 localStorage
   - 提取的色调存 localStorage
@@ -204,7 +207,8 @@ export function ArticleCard({ title, date, slug, tags }: ArticleCardProps) {
 - **字体**：Inter（正文）+ Noto Sans SC（中文），标题用 Zen Maru Gothic
 - **首页**：不放置插画，保持简洁——一句 tagline + 最新内容摘要
 - **动画**：页面切换淡入、卡片 staggered 渐现，点到为止
-- **主题色**：由实验室的色彩分析器动态覆盖，默认使用 Tailwind zinc 色系
+- **页面内无插画**：站点本身不嵌入插画图片，色彩分析器的上传图片仅用于提取色调
+- **主题色**：由色彩分析器动态覆盖，按 60-30-10 色彩法则分配；默认使用 Tailwind zinc 色系
 
 ## Success Criteria
 
@@ -213,12 +217,12 @@ export function ArticleCard({ title, date, slug, tags }: ArticleCardProps) {
 - [ ] 本地 `npm run dev` 可正常浏览所有五个页面
 - [ ] 文章可从 `.mdx` 文件正确渲染
 - [ ] 小游戏 iframe 正确加载
-- [ ] 色彩分析器：上传图片 → 提取色调 → 应用主题 → 刷新页面后主题保留
+- [ ] 色彩分析器：上传图片 → 提取色调 → 按 60-30-10 比例分配 → 应用主题 → 刷新页面后主题保留
 - [ ] 移动端导航栏正常折叠展开
 - [ ] GitHub Pages 部署后公网可访问
 
 ## Open Questions
 
-- [ ] GitHub 账号是否已有？需要创建仓库并配置 GitHub Pages
-- [ ] 域名：使用默认 `<username>.github.io` 还是购买自定义域名？
-- [ ] 插画图源：后续用免费可商用图源、AI 生成、还是标注引用知名画师？
+- [x] GitHub 账号已有
+- [x] 域名：使用 GitHub Pages 默认 `<username>.github.io` 域名
+- [x] 页面无插画——色彩分析器的图片仅用于色调提取，无需图源
