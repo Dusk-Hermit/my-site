@@ -11,10 +11,10 @@ export default async function GamePage({ params }: { params: Promise<{ slug: str
   if (!game) notFound();
   return (
     <div>
-      <h1 className="text-2xl font-bold">{game.name}</h1>
-      <p className="mt-2 text-zinc-500">{game.description}</p>
-      <div className="mt-6 overflow-hidden rounded-xl border border-zinc-200">
-        <iframe src={`/games/${slug}/index.html`} title={game.name} className="h-[500px] w-full" />
+      <h1 className="text-2xl font-bold text-[var(--color-accent)]">{game.name}</h1>
+      <p className="mt-2 text-[var(--color-accent)]/50">{game.description}</p>
+      <div className="mt-6 overflow-hidden rounded-xl border border-[var(--color-secondary)]">
+        <iframe src={`/my-site/games/${slug}/index.html`} title={game.name} className="h-[500px] w-full" />
       </div>
     </div>
   );

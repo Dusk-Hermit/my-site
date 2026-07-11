@@ -2,6 +2,7 @@ import { getAllArticles } from "@/lib/articles";
 import { notFound } from "next/navigation";
 import fs from "fs";
 import path from "path";
+import { marked } from "marked";
 
 export async function generateStaticParams() {
   const articles = await getAllArticles();
@@ -15,9 +16,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const raw = fs.readFileSync(filePath, "utf-8");
   const bodyMatch = raw.match(/^---\n[\s\S]*?\n---\n([\s\S]*)$/);
   const body = bodyMatch ? bodyMatch[1].trim() : raw;
+  const html = await marked.parse(body);
   return (
     <article className="prose prose-zinc max-w-none py-8">
-      <div dangerouslySetInnerHTML={{ __html: body }} />
+      <div dangerouslySetInnerHTML={{ __html: html }} />
     </article>
   );
 }
