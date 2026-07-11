@@ -12,10 +12,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="zh-CN">
-      <body className="min-h-screen bg-[var(--color-bg)] text-[var(--color-accent)] font-sans transition-colors duration-300">
+      <body className="flex flex-col min-h-screen bg-[var(--color-bg)] text-[var(--color-accent)] font-sans transition-colors duration-300">
         <ThemeProvider>
           <Navbar />
-          <main className="mx-auto max-w-4xl px-4 pt-16 pb-12">{children}</main>
+          <main className="mx-auto w-full max-w-4xl flex-1 px-4 pt-16 pb-12">{children}</main>
           <Footer />
         </ThemeProvider>
       </body>

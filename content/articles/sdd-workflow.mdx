@@ -1,0 +1,107 @@
+---
+title: 如何用 Spec-Driven Development 构建这个网站——一次完整的 SDD 实战复盘
+date: 2026-07-11
+tags: SDD, 工作流, Agent, 实战
+excerpt: 从零开始，用 brainstorming → spec → writing-plans → executing-plans 的方式，由 Agent 驱动构建一个完整的个人网站。
+---
+
+# 如何用 Spec-Driven Development 构建这个网站
+
+这篇文章记录了这个个人实验站从**零行代码到一个完整上线的网站**的全过程。整个过程由 Agent 驱动，严格遵循 SDD（Spec-Driven Development）六阶段工作流。
+
+## 什么是 SDD？
+
+SDD 的核心思想很简单：**在写任何代码之前，先把「要做什么」写清楚**。
+
+- ❌ 传统方式：拿到需求 → 开始写代码 → 边写边改 → 反复返工
+- ✅ SDD 方式：需求澄清 → 规格说明书 → 实现计划 → 逐任务执行
+
+四个阶段之间各有一道「闸门」——必须通过人类审阅才能进入下一阶段。
+
+## 阶段 1：Brainstorming（需求澄清）
+
+**使用的 skill**：`brainstorming`
+
+我没有一开始就写代码。Agent 先问了我一系列问题——一次只问一个：
+
+- 网站定位是什么？（实验站，放文章、小游戏、各种实验）
+- 部署方式？（GitHub Pages，零端口暴露，安全第一）
+- 内容结构？（导航五板块：首页 / 文章 / 小游戏 / 色彩分析器 / 关于）
+- 视觉风格？（现代二次元插画风——干净、留白、清爽干练）
+
+经过 8 轮问答后，Agent 提出了三个方案对比，最终选定 Next.js + Tailwind CSS + GitHub Pages。
+
+> **关键原则**：在人类确认设计之前，Agent 绝不写任何代码。这是 SDD 最重要的闸门。
+
+## 阶段 2：Spec-Driven Development（规格说明书）
+
+**使用的 skill**：`spec-driven-development`
+
+设计确认后，Agent 写出了一份结构化 spec，覆盖六个区域：
+
+1. **Objective**：目标、用户故事、验收标准
+2. **Commands**：构建、测试、部署的完整命令
+3. **Project Structure**：每个目录和文件的作用
+4. **Code Style**：类型定义、组件模式
+5. **Testing Strategy**：Vitest + React Testing Library
+6. **Boundaries**：Always / Ask First / Never
+
+Spec 写完后 Agent 先自审（查 TBD、矛盾、歧义），然后交给我审阅。我提了修改意见——比如色彩分析器应该独立为顶级栏目而非实验室的子功能——Agent 立即更新了 spec。
+
+## 阶段 3：Writing Plans（实现计划）
+
+**使用的 skill**：`writing-plans`
+
+Spec 确认后，Agent 将其拆解为 **11 个 TDD 任务**，每个任务精确到：
+
+- 文件路径（创建哪些文件、修改哪些文件）
+- 接口签名（每个函数/组件的输入输出类型）
+- 完整代码（不只是描述，而是实际可用的代码）
+- 验证步骤（运行什么命令、预期什么输出）
+
+每个任务遵循 TDD 三步循环：写失败测试 → 最小实现 → 确认通过 → commit。
+
+## 阶段 4：Executing Plans（执行实现）
+
+**使用的 skill**：`executing-plans` + `test-driven-development`
+
+按计划逐个执行 11 个任务。每个任务内的节奏：
+
+```
+Step 1: 写一个会失败的测试
+Step 2: 运行测试 → 确认失败
+Step 3: 写最小实现让测试通过
+Step 4: 运行测试 → 确认通过
+Step 5: git commit
+```
+
+到全部完成时，我们有了：
+- **7 个测试**（覆盖 articles、games、colorExtractor、ThemeProvider、Navbar）
+- **10 个页面**（首页、文章列表/详情、游戏列表/详情、色彩分析器、关于）
+- **14 个 git commit**，每个都有清晰的 message
+
+## 部署：GitHub Actions
+
+最后一步是配置 GitHub Pages 自动部署。每次 `git push` 到 main 分支，GitHub Actions 会自动：
+
+1. 安装依赖
+2. 运行测试
+3. 构建静态文件
+4. 部署到 GitHub Pages
+
+如果测试失败，部署会自动停止——这是一道自动化质量防线。
+
+## 总结：SDD 的核心价值
+
+| 传统开发 | SDD |
+|---------|-----|
+| 需求模糊就开始写代码 | 先写 spec，消除歧义 |
+| 边写边改，反复返工 | 分阶段验证，每个阶段有闸门 |
+| "我测试过了" | 自动化测试在每次 commit 前运行 |
+| 部署靠手动 | `git push` 自动部署 |
+
+**这次实战证明**：一个清晰的 spec + 一份可执行的 plan + TDD 逐任务实现 = 高质量、低返工的开发体验。
+
+---
+
+*这个网站本身就是 SDD 流程的产物——你现在看到的每一行代码，都是从 brainstorming 阶段的那 8 轮对话开始的。*

@@ -17,9 +17,9 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 z-50 w-full border-b border-zinc-200/50 bg-[var(--color-primary)]/80 backdrop-blur-md">
+    <nav className="fixed top-0 z-50 w-full border-b border-[var(--color-secondary)]/40 bg-[var(--color-primary)]/85 backdrop-blur-md transition-colors duration-300">
       <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3">
-        <Link href="/" className="text-lg font-bold tracking-wide">
+        <Link href="/" className="text-lg font-bold tracking-wide text-[var(--color-accent)]">
           My Lab
         </Link>
         <div className="hidden gap-6 sm:flex">
@@ -27,22 +27,22 @@ export function Navbar() {
             <Link
               key={href}
               href={href}
-              className={`text-sm transition-colors hover:text-[var(--color-accent)] ${
-                pathname === href ? "font-semibold text-[var(--color-accent)]" : "text-zinc-500"
+              className={`text-sm transition-colors ${
+                pathname === href ? "font-semibold text-[var(--color-accent)]" : "text-[var(--color-accent)]/50"
               }`}
             >
               {label}
             </Link>
           ))}
         </div>
-        <button className="sm:hidden text-zinc-600" onClick={() => setOpen(!open)} aria-label="Toggle menu">
+        <button className="sm:hidden text-[var(--color-accent)]" onClick={() => setOpen(!open)} aria-label="Toggle menu">
           {open ? "✕" : "☰"}
         </button>
       </div>
       {open && (
-        <div className="flex flex-col gap-2 border-t border-zinc-200/50 px-4 py-3 sm:hidden bg-[var(--color-primary)]/95 backdrop-blur-md">
+        <div className="flex flex-col gap-2 border-t border-[var(--color-secondary)]/40 px-4 py-3 sm:hidden bg-[var(--color-primary)]/95 backdrop-blur-md">
           {LINKS.map(({ href, label }) => (
-            <Link key={href} href={href} className="text-sm" onClick={() => setOpen(false)}>
+            <Link key={href} href={href} className="text-sm text-[var(--color-accent)]" onClick={() => setOpen(false)}>
               {label}
             </Link>
           ))}
