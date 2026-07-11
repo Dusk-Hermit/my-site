@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', 'Noto Sans SC', sans-serif;
+  --font-heading: 'Zen Maru Gothic', serif;
+}
